@@ -1,4 +1,3 @@
-import ClientStuff from "./ClientStuff";
 import ClientStuffWrapper from "@/app/(navbar)/home/ClientStuffWrapper";
 
 export default function Account() {

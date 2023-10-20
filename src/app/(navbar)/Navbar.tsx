@@ -4,7 +4,6 @@ import Link from "next/link";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { logout, setAuth, setJid } from "../store/slices/authSlice";
-import { usePathname, useRouter } from "next/navigation";
 import useApi from "@/hooks/api/useApi";
 
 export default function MainNavbar() {
@@ -13,9 +12,7 @@ export default function MainNavbar() {
   const dispatch = useAppDispatch();
   const api = useApi();
 
-  const authStateLocalStorage = JSON.parse(
-    localStorage.getItem("persist:auth")
-  );
+  const { accessToken } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuth) {
@@ -28,13 +25,11 @@ export default function MainNavbar() {
   const handleLogout = useCallback(
     async (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      if (authStateLocalStorage?.accessToken) {
-        dispatch(logout(api, JSON.parse(authStateLocalStorage?.accessToken)));
-      }
+      dispatch(logout(api, accessToken));
       dispatch(setJid(""));
       dispatch(setAuth(false));
-    },
-    [api, authStateLocalStorage?.accessToken, dispatch]
+    }
+    // [api, accessToken, dispatch]
   );
 
   return (
@@ -54,7 +49,7 @@ export default function MainNavbar() {
             <button onClick={handleLogout}>Logout</button>
           </>
         )}
-        {isAuthenticated === false && (
+        {accessToken && (
           <div className="flex">
             <button onClick={handleLogout}>Logout</button>
           </div>

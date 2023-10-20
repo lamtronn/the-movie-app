@@ -1,15 +1,12 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { login, setAuth, setJid } from "@/app/store/slices/authSlice";
-import { useRouter } from "next/navigation";
+import { login } from "@/app/store/slices/authSlice";
 import { useCallback, useState } from "react";
 import useApi from "@/hooks/api/useApi";
 
 // client side to add interactivity using local state
 export default function LoginForm() {
-  const [loading, setLoading] = useState(false);
-  const [values, setValues] = useState({ username: "", password: "" });
   const api = useApi();
   const dispatch = useAppDispatch();
   const { previousUrl } = useAppSelector((state) => state.auth);

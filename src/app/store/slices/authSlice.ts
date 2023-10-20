@@ -11,6 +11,7 @@ export interface IAuthState {
   requestToken: string | undefined;
   accessToken: string | undefined;
   previousUrl: string | undefined;
+  isLoadingAccessToken: boolean;
 }
 
 const initialState: IAuthState = {
@@ -20,6 +21,7 @@ const initialState: IAuthState = {
   requestToken: undefined,
   accessToken: undefined,
   previousUrl: undefined,
+  isLoadingAccessToken: false,
 };
 
 export const authSlice = createSlice({
@@ -44,6 +46,9 @@ export const authSlice = createSlice({
     setPreviousUrl: (state, action: PayloadAction<string>) => {
       state.previousUrl = action.payload;
     },
+    setIsLoadingAccessToken: (state, action: PayloadAction<boolean>) => {
+      state.isLoadingAccessToken = action.payload;
+    },
   },
 });
 
@@ -55,6 +60,7 @@ export const {
   setRequestToken,
   setAccessToken,
   setPreviousUrl,
+  setIsLoadingAccessToken,
 } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
@@ -89,11 +95,14 @@ export const getAccessKey =
   (api: AppApi, requestToken: string): AppThunk =>
   async (dispatch) => {
     try {
+      dispatch(setIsLoadingAccessToken(true));
       const accessTokenResponse = await api.getAccessToken(requestToken);
       const accessTokenResult = accessTokenResponse.data;
       dispatch(setAccessToken(accessTokenResult.access_token));
+      dispatch(setIsLoadingAccessToken(false));
     } catch (e) {
       console.error(e);
+      dispatch(setIsLoadingAccessToken(false));
     }
   };
 
@@ -101,10 +110,10 @@ export const logout =
   (api: AppApi, accessToken: string): AppThunk =>
   async (dispatch) => {
     try {
-      const accessTokenResponse = await api.deleteAccessToken(accessToken);
+      await api.deleteAccessToken(accessToken);
+      localStorage.removeItem("persist:auth");
       dispatch(setAccessToken(undefined));
       dispatch(setRequestToken(undefined));
-      localStorage.removeItem("persist:auth");
     } catch (e) {
       console.error(e);
     }
