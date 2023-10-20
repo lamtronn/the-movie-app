@@ -1,17 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { setAuth, setJid } from "../store/slices/authSlice";
+import { logout, setAuth, setJid } from "../store/slices/authSlice";
 import { usePathname, useRouter } from "next/navigation";
+import useApi from "@/hooks/api/useApi";
 
 export default function MainNavbar() {
   const isAuth = useAppSelector((state) => state.auth.isAuth);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const dispatch = useAppDispatch();
-  const pathname = usePathname();
-  const router = useRouter();
+  const api = useApi();
+
+  const authStateLocalStorage = JSON.parse(
+    localStorage.getItem("persist:auth")
+  );
 
   useEffect(() => {
     if (isAuth) {
@@ -21,19 +25,17 @@ export default function MainNavbar() {
     }
   }, [isAuth]);
 
-  const handleLogout = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    await fetch("http://localhost:3002/auth/logout", {
-      credentials: "include",
-      mode: "cors",
-    });
-    const inAuthPage = pathname.startsWith("/account");
-    if (inAuthPage) {
-      router.push("/login");
-    }
-    dispatch(setJid(""));
-    dispatch(setAuth(false));
-  };
+  const handleLogout = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      if (authStateLocalStorage?.accessToken) {
+        dispatch(logout(api, JSON.parse(authStateLocalStorage?.accessToken)));
+      }
+      dispatch(setJid(""));
+      dispatch(setAuth(false));
+    },
+    [api, authStateLocalStorage?.accessToken, dispatch]
+  );
 
   return (
     <nav className="flex content-between justify-between w-full h-full px-5 text-white">
@@ -54,9 +56,7 @@ export default function MainNavbar() {
         )}
         {isAuthenticated === false && (
           <div className="flex">
-            <Link href={"/login"} className="m-auto">
-              Login
-            </Link>
+            <button onClick={handleLogout}>Logout</button>
           </div>
         )}
       </div>

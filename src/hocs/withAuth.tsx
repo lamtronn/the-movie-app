@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/app/store";
+import React, { useCallback, useEffect } from "react";
+import { useAppDispatch } from "@/app/store";
 import { useRouter } from "next/navigation";
 import useApi from "@/hooks/api/useApi";
 import { getAccessKey, setPreviousUrl } from "@/app/store/slices/authSlice";
@@ -14,7 +14,7 @@ const withAuth = (WrappedComponent) => {
       localStorage.getItem("persist:auth")
     );
 
-    const fetchAccessToken = async () => {
+    const fetchAccessToken = useCallback(async () => {
       if (
         authStateLocalStorage?.requestToken &&
         !authStateLocalStorage?.accessToken
@@ -23,21 +23,26 @@ const withAuth = (WrappedComponent) => {
           getAccessKey(api, JSON.parse(authStateLocalStorage?.requestToken))
         );
       }
-    };
+    }, [
+      api,
+      authStateLocalStorage?.accessToken,
+      authStateLocalStorage?.requestToken,
+      dispatch,
+    ]);
 
     useEffect(() => {
+      dispatch(setPreviousUrl(window.location.href));
       if (!authStateLocalStorage?.requestToken) {
         router.push("/login");
       }
-      dispatch(setPreviousUrl(window.location.href));
+
       fetchAccessToken();
-    }, [api, authStateLocalStorage?.requestToken, fetchAccessToken, router]);
+    }, [authStateLocalStorage?.requestToken, dispatch, fetchAccessToken, router]);
 
-    if (!authStateLocalStorage?.requestToken) {
-      return;
-    }
-
-    if (!authStateLocalStorage?.accessToken) {
+    if (
+      !authStateLocalStorage?.requestToken ||
+      !authStateLocalStorage?.accessToken
+    ) {
       return;
     }
 

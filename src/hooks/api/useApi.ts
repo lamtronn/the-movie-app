@@ -8,6 +8,7 @@ export type AppApi = {
   getMovies: () => Promise<any>;
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
   getAccessToken: (requestToken: string) => Promise<AccessTokenType>;
+  deleteAccessToken: (accessToken: string) => Promise<any>;
 };
 
 function useApi(): AppApi {
@@ -24,6 +25,12 @@ function useApi(): AppApi {
       getAccessToken: async (requestToken: string) =>
         axiosNewTMDB.post(`/auth/access_token`, {
           request_token: requestToken,
+        }),
+      deleteAccessToken: async (accessToken: string) =>
+        axiosNewTMDB.delete(`/auth/access_token`, {
+          data: {
+            access_token: accessToken,
+          },
         }),
       getMovies: async () => axios.get(`/discover/movie`),
     };

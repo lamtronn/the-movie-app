@@ -10,7 +10,7 @@ export interface IAuthState {
   text: string;
   requestToken: string | undefined;
   accessToken: string | undefined;
-  previousUrl: string;
+  previousUrl: string | undefined;
 }
 
 const initialState: IAuthState = {
@@ -19,7 +19,7 @@ const initialState: IAuthState = {
   text: "",
   requestToken: undefined,
   accessToken: undefined,
-  previousUrl: "",
+  previousUrl: undefined,
 };
 
 export const authSlice = createSlice({
@@ -92,6 +92,19 @@ export const getAccessKey =
       const accessTokenResponse = await api.getAccessToken(requestToken);
       const accessTokenResult = accessTokenResponse.data;
       dispatch(setAccessToken(accessTokenResult.access_token));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+export const logout =
+  (api: AppApi, accessToken: string): AppThunk =>
+  async (dispatch) => {
+    try {
+      const accessTokenResponse = await api.deleteAccessToken(accessToken);
+      dispatch(setAccessToken(undefined));
+      dispatch(setRequestToken(undefined));
+      localStorage.removeItem("persist:auth");
     } catch (e) {
       console.error(e);
     }
