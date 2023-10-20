@@ -5,6 +5,18 @@ import { persistReducer } from "redux-persist";
 import { authReducer } from "./slices/authSlice";
 import storage from "./customStorage";
 import logger from "redux-logger";
+import { ThunkAction } from "redux-thunk";
+import { PersistedState } from "redux-persist/es/types";
+import { Action } from "redux";
+
+export type RootReducerState = PersistedState & ReturnType<typeof rootReducer>;
+
+export type AppThunk = ThunkAction<
+  void,
+  RootReducerState,
+  unknown,
+  Action<string>
+>;
 
 const authPersistConfig = {
   key: "auth",

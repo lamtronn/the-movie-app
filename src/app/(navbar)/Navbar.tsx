@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { MouseEvent, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "@/app/store";
 import { setAuth, setJid } from "../store/slices/authSlice";
 import { usePathname, useRouter } from "next/navigation";
 
