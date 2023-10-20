@@ -4,8 +4,9 @@ import { store, useAppDispatch, useAppSelector } from "@/app/store";
 import { useCallback, useEffect, useState } from "react";
 import useApi from "@/hooks/api/useApi";
 import { updateText } from "@/app/store/slices/authSlice";
+import withAuth from "@/hocs/withAuth";
 
-export default function ClientStuff() {
+const ClientStuff = () => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const jid = store.getState().auth.jid;
@@ -43,4 +44,6 @@ export default function ClientStuff() {
       <button onClick={onClickButton}>click me to update text</button>
     </div>
   );
-}
+};
+
+export default withAuth(ClientStuff);

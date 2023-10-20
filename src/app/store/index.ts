@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
 import { authReducer } from "./slices/authSlice";
 import storage from "./customStorage";
 import logger from "redux-logger";
@@ -21,7 +20,7 @@ export type AppThunk = ThunkAction<
 const authPersistConfig = {
   key: "auth",
   storage: storage,
-  whitelist: ["isAuth", "jid"],
+  whitelist: ["isAuth", "jid", "requestToken", "accessToken"],
 };
 
 const rootReducer = combineReducers({
