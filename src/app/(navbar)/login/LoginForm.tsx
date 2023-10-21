@@ -5,7 +5,6 @@ import { login } from "@/app/store/slices/authSlice";
 import { useCallback, useState } from "react";
 import useApi from "@/hooks/api/useApi";
 
-// client side to add interactivity using local state
 export default function LoginForm() {
   const api = useApi();
   const dispatch = useAppDispatch();

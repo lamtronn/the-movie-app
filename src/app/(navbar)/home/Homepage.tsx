@@ -1,13 +1,12 @@
 "use client";
 
 import { store, useAppDispatch, useAppSelector } from "@/app/store";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import useApi from "@/hooks/api/useApi";
 import { updateText } from "@/app/store/slices/authSlice";
 import withAuth from "@/hocs/withAuth";
 
-const ClientStuff = () => {
-  const [username, setUsername] = useState("");
+const Homepage = () => {
   const jid = store.getState().auth.jid;
   const api = useApi();
   const dispatch = useAppDispatch();
@@ -20,11 +19,11 @@ const ClientStuff = () => {
 
   return (
     <div>
-      <h3 className="font-bold text-4xl">Welcome {username}!</h3>
+      <h3 className="font-bold text-4xl">Welcome!</h3>
       <div>{text}</div>
       <button onClick={onClickButton}>click me to update text</button>
     </div>
   );
 };
 
-export default withAuth(ClientStuff);
+export default withAuth(Homepage);

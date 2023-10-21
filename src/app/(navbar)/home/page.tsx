@@ -1,9 +1,9 @@
-import ClientStuffWrapper from "@/app/(navbar)/home/ClientStuffWrapper";
+import HomepageWrapper from "@/app/(navbar)/home/HomepageWrapper";
 
 export default function Account() {
   return (
-    <div className="p-5">
-      <ClientStuffWrapper />
+    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <HomepageWrapper />
     </div>
   );
 }

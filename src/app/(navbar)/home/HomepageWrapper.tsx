@@ -1,12 +1,12 @@
 "use client";
 
-import ClientStuff from "@/app/(navbar)/home/ClientStuff";
+import Homepage from "@/app/(navbar)/home/Homepage";
 import ReduxProvider from "@/app/store/ReduxProvider";
 
-export default function ClientStuffWrapper() {
+export default function HomepageWrapper() {
   return (
     <ReduxProvider>
-      <ClientStuff />
+      <Homepage />
     </ReduxProvider>
   );
 }
