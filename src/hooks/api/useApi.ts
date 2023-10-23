@@ -6,6 +6,7 @@ import { AccessTokenType, RequestTokenType } from "@/types/apiTypes";
 export type AppApi = {
   updateText: () => Promise<string>;
   getMovies: (page: number) => Promise<any>;
+  getTrendingMovies: () => Promise<any>;
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
   getAccessToken: (requestToken: string) => Promise<AccessTokenType>;
   deleteAccessToken: (accessToken: string) => Promise<any>;
@@ -38,7 +39,12 @@ function useApi(): AppApi {
         await axios
           .get(`/discover/movie?page=${page ?? 1}`)
           .then((res) => res.data),
+      getTrendingMovies: async () =>
+        await axios
+          .get(`/trending/movie/day?language=en-US`)
+          .then((res) => res.data),
     };
   }, [axios, axiosNewTMDB]);
 }
+
 export default useApi;

@@ -11,13 +11,18 @@ const withAuth = (WrappedComponent) => {
     const api = useApi();
     const dispatch = useAppDispatch();
     const { isLoadingAccessToken, accessToken, requestToken } = useAppSelector(
-      (state) => state.auth
+      (state) => state.auth,
     );
+
+    if (typeof window === "undefined") {
+      return;
+    }
 
     const authStateLocalStorage = JSON.parse(
-      localStorage.getItem("persist:auth")
+      localStorage?.getItem("persist:auth"),
     );
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       dispatch(setPreviousUrl(window.location.href));
       if (
@@ -26,7 +31,15 @@ const withAuth = (WrappedComponent) => {
       ) {
         dispatch(getAccessKey(api, requestToken));
       }
-    }, [api, accessToken, requestToken, dispatch, router, authStateLocalStorage?.requestToken, authStateLocalStorage?.accessToken]);
+    }, [
+      api,
+      accessToken,
+      requestToken,
+      dispatch,
+      router,
+      authStateLocalStorage?.requestToken,
+      authStateLocalStorage?.accessToken,
+    ]);
 
     if (isLoadingAccessToken && !authStateLocalStorage?.accessToken) {
       return <div />;

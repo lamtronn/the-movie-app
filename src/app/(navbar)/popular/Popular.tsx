@@ -8,17 +8,13 @@ import MoviesListWrapper from "@/components/MoviesListWrapper";
 import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useRouter, useSearchParams } from "next/navigation";
-import MoviesCarousel from "@/components/MoviesCarousel";
 
-const Homepage = () => {
+const Popular = () => {
   const searchParams = useSearchParams();
   const searchPage = searchParams?.get("page") ?? 1;
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [moviesList, setMoviesList] = useState<MoviesType[]>([]);
-  const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
-    [],
-  );
   const api = useApi();
 
   const getMoviesData = useCallback(async () => {
@@ -32,20 +28,8 @@ const Homepage = () => {
     }
   }, [page]);
 
-  const getTrendingMoviesData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const res = await api.getTrendingMovies();
-      setTrendingMoviesList(res.results);
-      setIsLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [page]);
-
   useEffect(() => {
     getMoviesData();
-    getTrendingMoviesData();
   }, [api, getMoviesData]);
 
   const onGoToNewPage = (newPage: number) => {
@@ -63,7 +47,6 @@ const Homepage = () => {
 
   return (
     <div>
-      <MoviesCarousel moviesList={trendingMoviesList.slice(0, 5)} />
       <MoviesListWrapper moviesList={moviesList} />
       <Pagination
         page={page}
@@ -74,4 +57,4 @@ const Homepage = () => {
   );
 };
 
-export default withAuth(Homepage);
+export default withAuth(Popular);
