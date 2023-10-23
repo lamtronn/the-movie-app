@@ -7,7 +7,7 @@ type MoviesListWrapperProps = {
 
 const MoviesListWrapper = ({ moviesList }: MoviesListWrapperProps) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
       {moviesList?.map((movie: MoviesType) => (
         <MoviesItem key={movie.id} data={movie} />
       ))}
