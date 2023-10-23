@@ -1,4 +1,4 @@
-import MainNavbarClientWrapper from "./NavbarClientWrapper";
+import Navbar from "@/components/Navbar";
 
 export default function NavLayout({ children }: { children: React.ReactNode }) {
   if (typeof window !== "undefined") {
@@ -7,7 +7,7 @@ export default function NavLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
       <div className="w-full h-16 bg-black">
-        <MainNavbarClientWrapper />
+        <Navbar />
       </div>
       {children}
     </main>

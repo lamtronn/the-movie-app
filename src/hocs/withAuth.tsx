@@ -1,51 +1,40 @@
 import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/app/store";
-import { useRouter } from "next/navigation";
-import useApi from "@/hooks/api/useApi";
-import { getAccessKey, setPreviousUrl } from "@/app/store/slices/authSlice";
-import LoginForm from "@/app/(navbar)/login/LoginForm";
+import LoginForm from "@/views/LoginScreen/LoginForm";
+import { useAuthStore } from "@/store/useAuthStore";
+import useAuthApi from "@/hooks/apis/useAuthApi";
 
 const withAuth = (WrappedComponent) => {
   return React.forwardRef(function AuthComponent(props, ref) {
-    const router = useRouter();
-    const api = useApi();
-    const dispatch = useAppDispatch();
-    const { isLoadingAccessToken, accessToken, requestToken } = useAppSelector(
-      (state) => state.auth,
-    );
+    const { requestToken } = useAuthStore();
 
-    if (typeof window === "undefined") {
-      return;
-    }
+    const api = useAuthApi();
 
     const authStateLocalStorage = JSON.parse(
-      localStorage?.getItem("persist:auth"),
-    );
+      localStorage?.getItem("auth-storage"),
+    ).state;
+
+    const getAccessToken = async () => {
+      await api.getAccessToken(requestToken);
+    };
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      dispatch(setPreviousUrl(window.location.href));
       if (
-        authStateLocalStorage?.requestToken &&
-        !authStateLocalStorage?.accessToken
+        authStateLocalStorage.requestToken &&
+        !authStateLocalStorage.accessToken
       ) {
-        dispatch(getAccessKey(api, requestToken));
+        getAccessToken();
       }
-    }, [
-      api,
-      accessToken,
-      requestToken,
-      dispatch,
-      router,
-      authStateLocalStorage?.requestToken,
-      authStateLocalStorage?.accessToken,
-    ]);
+    }, []);
 
-    if (isLoadingAccessToken && !authStateLocalStorage?.accessToken) {
+    if (
+      authStateLocalStorage.isLoadingAccessToken &&
+      !authStateLocalStorage.accessToken
+    ) {
       return <div />;
     }
 
-    if (!authStateLocalStorage?.accessToken) {
+    if (!authStateLocalStorage.accessToken) {
       return <LoginForm />;
     }
 

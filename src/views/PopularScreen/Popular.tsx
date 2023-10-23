@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import useApi from "@/hooks/api/useApi";
+import useApi from "@/hooks/useApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";

@@ -1,16 +1,32 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import useApi from "@/hooks/api/useApi";
+import { createContext, useCallback, useEffect, useState } from "react";
+import useApi from "@/hooks/useApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";
 import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import MoviesCarousel from "@/components/MoviesCarousel";
 
+export const HomepageContext = createContext<ContextType>(undefined);
+
+type ContextType = {
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
+  page: number;
+  setPage: (value: number) => void;
+  moviesList: MoviesType[];
+  setMoviesList: (value: MoviesType[]) => void;
+  trendingMoviesList: MoviesType[];
+  setTrendingMoviesList: (value: MoviesType[]) => void;
+  onClickPreviousPage: () => void;
+  onClickNextPage: () => void;
+};
+
 const Homepage = () => {
+  const api = useApi();
   const searchParams = useSearchParams();
   const searchPage = searchParams?.get("page") ?? 1;
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
@@ -19,7 +35,19 @@ const Homepage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
     [],
   );
-  const api = useApi();
+
+  const contextValues = {
+    isLoading,
+    setIsLoading,
+    page,
+    setPage,
+    moviesList,
+    setMoviesList,
+    trendingMoviesList,
+    setTrendingMoviesList,
+    onClickPreviousPage: () => onGoToNewPage(page - 1),
+    onClickNextPage: () => onGoToNewPage(page + 1),
+  };
 
   const getMoviesData = useCallback(async () => {
     try {
@@ -30,7 +58,7 @@ const Homepage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [page]);
+  }, [api, page]);
 
   const getTrendingMoviesData = useCallback(async () => {
     try {
@@ -41,14 +69,15 @@ const Homepage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [page]);
+  }, [api]);
 
   useEffect(() => {
     getMoviesData();
     getTrendingMoviesData();
-  }, [api, getMoviesData]);
+  }, [getMoviesData, getTrendingMoviesData]);
 
   const onGoToNewPage = (newPage: number) => {
+    setIsLoading(true);
     setPage(newPage);
     window.history.pushState(
       {},
@@ -62,15 +91,11 @@ const Homepage = () => {
   }
 
   return (
-    <div>
-      <MoviesCarousel moviesList={trendingMoviesList.slice(0, 5)} />
-      <MoviesListWrapper moviesList={moviesList} />
-      <Pagination
-        page={page}
-        onClickPreviousPage={() => onGoToNewPage(page - 1)}
-        onClickNextPage={() => onGoToNewPage(page + 1)}
-      />
-    </div>
+    <HomepageContext.Provider value={contextValues}>
+      <MoviesCarousel />
+      <MoviesListWrapper />
+      <Pagination />
+    </HomepageContext.Provider>
   );
 };
 

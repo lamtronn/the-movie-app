@@ -1,4 +1,4 @@
-import ClientLoginFormWrapper from "./ClientFormWrapper";
+import LoginForm from "@/views/LoginScreen/LoginForm";
 
 export default function Login() {
   return (
@@ -6,7 +6,7 @@ export default function Login() {
       <div className="m-auto">
         <h1 className="font-bold text-3xl">Login</h1>
         <br />
-        <ClientLoginFormWrapper />
+        <LoginForm />
       </div>
     </div>
   );

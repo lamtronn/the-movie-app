@@ -1,16 +1,11 @@
-type PaginationProps = {
-  page: number;
-  onClickPreviousPage: () => void;
-  onClickNextPage: () => void;
-};
+import { useContext } from "react";
+import { HomepageContext } from "@/views/HomeScreen/Homepage";
 
-const Pagination = ({
-  page,
-  onClickPreviousPage,
-  onClickNextPage,
-}: PaginationProps) => {
+const Pagination = () => {
+  const { page, onClickPreviousPage, onClickNextPage } =
+    useContext(HomepageContext);
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between w-full">
       {page !== 1 ? (
         <button
           type="button"

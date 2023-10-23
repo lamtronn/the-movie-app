@@ -1,7 +1,9 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { ApiMode } from "@/types/apiTypes";
-import { useAppDispatch, useAppSelector } from "@/app/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { useAuthStore } from "@/store/useAuthStore";
+
 const apiMode: ApiMode = "local";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,8 +20,8 @@ const createAxiosInstance = () => {
 const retryAxios = createAxiosInstance();
 
 function useAxios() {
-  const dispatch = useAppDispatch();
-  const { accessToken } = useAppSelector((state) => state.auth);
+  // const { accessToken } = useAppSelector((state) => state.auth);
+  const { accessToken } = useAuthStore();
 
   // Using a ref for the session token means the Axios instance doesn't get rebuilt whenever the
   // session token is updated. If the Axios request were to be rebuilt, API requests could be

@@ -1,13 +1,12 @@
+"use-client";
 import { MoviesType } from "@/types/dataTypes";
 import { TMDB_BASE_IMAGE_URL } from "@/constants/config";
 import { Carousel } from "react-responsive-carousel";
+import { useContext } from "react";
+import { HomepageContext } from "@/views/HomeScreen/Homepage";
 
-("use-client");
-
-type MoviesCarouselProps = {
-  moviesList: MoviesType[];
-};
-const MoviesCarousel = ({ moviesList }: MoviesCarouselProps) => {
+const MoviesCarousel = () => {
+  const { moviesList } = useContext(HomepageContext);
   return (
     <Carousel showArrows showStatus={false} infiniteLoop showThumbs={false}>
       {moviesList.map((item: MoviesType) => (
