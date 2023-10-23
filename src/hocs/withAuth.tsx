@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { useRouter } from "next/navigation";
 import useApi from "@/hooks/api/useApi";
@@ -18,7 +18,7 @@ const withAuth = (WrappedComponent) => {
       localStorage.getItem("persist:auth")
     );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       dispatch(setPreviousUrl(window.location.href));
       if (
         authStateLocalStorage?.requestToken &&
@@ -26,11 +26,12 @@ const withAuth = (WrappedComponent) => {
       ) {
         dispatch(getAccessKey(api, requestToken));
       }
-    }, [api, accessToken, requestToken, dispatch, router]);
+    }, [api, accessToken, requestToken, dispatch, router, authStateLocalStorage?.requestToken, authStateLocalStorage?.accessToken]);
 
     if (isLoadingAccessToken && !authStateLocalStorage?.accessToken) {
       return <div />;
     }
+
     if (!authStateLocalStorage?.accessToken) {
       return <LoginForm />;
     }

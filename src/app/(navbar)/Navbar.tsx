@@ -26,10 +26,8 @@ export default function MainNavbar() {
     async (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       dispatch(logout(api, accessToken));
-      dispatch(setJid(""));
-      dispatch(setAuth(false));
     },
-    [api, accessToken, dispatch]
+    [api, accessToken, dispatch],
   );
 
   return (

@@ -5,7 +5,7 @@ import { AccessTokenType, RequestTokenType } from "@/types/apiTypes";
 
 export type AppApi = {
   updateText: () => Promise<string>;
-  getMovies: () => Promise<any>;
+  getMovies: (page: number) => Promise<any>;
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
   getAccessToken: (requestToken: string) => Promise<AccessTokenType>;
   deleteAccessToken: (accessToken: string) => Promise<any>;
@@ -21,19 +21,24 @@ function useApi(): AppApi {
         return "text is updated!";
       },
       getRequestToken: async (currentURL: string) =>
-        axiosNewTMDB.post(`/auth/request_token`, { redirect_to: currentURL }),
+        await axiosNewTMDB.post(`/auth/request_token`, {
+          redirect_to: currentURL,
+        }),
       getAccessToken: async (requestToken: string) =>
-        axiosNewTMDB.post(`/auth/access_token`, {
+        await axiosNewTMDB.post(`/auth/access_token`, {
           request_token: requestToken,
         }),
       deleteAccessToken: async (accessToken: string) =>
-        axiosNewTMDB.delete(`/auth/access_token`, {
+        await axiosNewTMDB.delete(`/auth/access_token`, {
           data: {
             access_token: accessToken,
           },
         }),
-      getMovies: async () => axios.get(`/discover/movie`),
+      getMovies: async (page: number) =>
+        await axios
+          .get(`/discover/movie?page=${page ?? 1}`)
+          .then((res) => res.data),
     };
-  }, [axios]);
+  }, [axios, axiosNewTMDB]);
 }
 export default useApi;
