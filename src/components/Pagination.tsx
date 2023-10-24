@@ -1,9 +1,14 @@
-import { useContext } from "react";
-import { HomepageContext } from "@/views/HomeScreen/Homepage";
+type PaginationProps = {
+  page: number;
+  onClickPreviousPage: () => void;
+  onClickNextPage: () => void;
+};
 
-const Pagination = () => {
-  const { page, onClickPreviousPage, onClickNextPage } =
-    useContext(HomepageContext);
+const Pagination = ({
+  page,
+  onClickPreviousPage,
+  onClickNextPage,
+}: PaginationProps) => {
   return (
     <div className="flex justify-between w-full">
       {page !== 1 ? (

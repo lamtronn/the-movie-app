@@ -15,14 +15,14 @@ export const HomepageContext = createContext<ContextType>(undefined);
 type ContextType = {
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
-  page: number;
-  setPage: (value: number) => void;
+  // page: number;
+  // setPage: (value: number) => void;
   moviesList: MoviesType[];
   setMoviesList: (value: MoviesType[]) => void;
   trendingMoviesList: MoviesType[];
   setTrendingMoviesList: (value: MoviesType[]) => void;
-  onClickPreviousPage: () => void;
-  onClickNextPage: () => void;
+  // onClickPreviousPage: () => void;
+  // onClickNextPage: () => void;
 };
 
 const Homepage = () => {
@@ -39,14 +39,10 @@ const Homepage = () => {
   const contextValues = {
     isLoading,
     setIsLoading,
-    page,
-    setPage,
     moviesList,
     setMoviesList,
     trendingMoviesList,
     setTrendingMoviesList,
-    onClickPreviousPage: () => onGoToNewPage(page - 1),
-    onClickNextPage: () => onGoToNewPage(page + 1),
   };
 
   const getMoviesData = useCallback(async () => {
@@ -76,15 +72,14 @@ const Homepage = () => {
     getTrendingMoviesData();
   }, [getMoviesData, getTrendingMoviesData]);
 
-  const onGoToNewPage = (newPage: number) => {
-    setIsLoading(true);
+  const onGoToNewPage = useCallback((newPage: number) => {
     setPage(newPage);
     window.history.pushState(
       {},
       "",
       `${window.location.pathname}?page=${newPage}`,
     );
-  };
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -93,8 +88,12 @@ const Homepage = () => {
   return (
     <HomepageContext.Provider value={contextValues}>
       <MoviesCarousel />
-      <MoviesListWrapper />
-      <Pagination />
+      <MoviesListWrapper moviesList={moviesList} />
+      <Pagination
+        page={page}
+        onClickPreviousPage={() => onGoToNewPage(page - 1)}
+        onClickNextPage={() => onGoToNewPage(page + 1)}
+      />
     </HomepageContext.Provider>
   );
 };

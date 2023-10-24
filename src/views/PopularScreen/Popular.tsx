@@ -14,23 +14,36 @@ const Popular = () => {
   const searchPage = searchParams?.get("page") ?? 1;
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [moviesList, setMoviesList] = useState<MoviesType[]>([]);
+  const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
+    [],
+  );
   const api = useApi();
 
-  const getMoviesData = useCallback(async () => {
+  const contextValues = {
+    isLoading,
+    setIsLoading,
+    page,
+    setPage,
+    trendingMoviesList,
+    setTrendingMoviesList,
+    onClickPreviousPage: () => onGoToNewPage(page - 1),
+    onClickNextPage: () => onGoToNewPage(page + 1),
+  };
+
+  const getTrendingMoviesData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await api.getMovies(page);
-      setMoviesList(res.results);
+      const res = await api.getTrendingMovies();
+      setTrendingMoviesList(res.results);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
-  }, [page]);
+  }, [api]);
 
   useEffect(() => {
-    getMoviesData();
-  }, [api, getMoviesData]);
+    getTrendingMoviesData();
+  }, [getTrendingMoviesData]);
 
   const onGoToNewPage = (newPage: number) => {
     setPage(newPage);
@@ -47,7 +60,7 @@ const Popular = () => {
 
   return (
     <div>
-      <MoviesListWrapper moviesList={moviesList} />
+      <MoviesListWrapper moviesList={trendingMoviesList} />
       <Pagination
         page={page}
         onClickPreviousPage={() => onGoToNewPage(page - 1)}
