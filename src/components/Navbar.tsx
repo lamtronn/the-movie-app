@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
 import { usePathname } from "next/navigation";
 import "flowbite";
+
 const nav = [
   {
     title: "Home",
@@ -34,11 +35,9 @@ const MainNavbar = () => {
 
   return (
     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-black border-gray-200">
-      {/*<a href="https://flowbite.com/" className="flex items-center">*/}
       <p className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
         Movie App
       </p>
-      {/*</a>*/}
       <button
         data-collapse-toggle="navbar-default"
         type="button"
@@ -58,7 +57,7 @@ const MainNavbar = () => {
         </svg>
       </button>
       <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul className="z-50 absolute right-4 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:border-gray-700">
+        <ul className="z-50 absolute md:relative right-4 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:border-gray-700">
           {nav.map((item) => (
             <li key={item.path}>
               <a
