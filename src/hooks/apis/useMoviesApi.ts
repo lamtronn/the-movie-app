@@ -14,7 +14,7 @@ export type AppApi = {
   ) => Promise<MovieDetailsType>;
 };
 
-function useApi(): AppApi {
+function useMoviesApi(): AppApi {
   const axios = useAxios();
 
   return <AppApi>useMemo(() => {
@@ -37,4 +37,4 @@ function useApi(): AppApi {
   }, [axios]);
 }
 
-export default useApi;
+export default useMoviesApi;

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import useApi from "@/hooks/useApi";
+import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";
@@ -21,12 +21,10 @@ type ContextType = {
   setMoviesList: (value: MoviesType[]) => void;
   trendingMoviesList: MoviesType[];
   setTrendingMoviesList: (value: MoviesType[]) => void;
-  // onClickPreviousPage: () => void;
-  // onClickNextPage: () => void;
 };
 
 const Homepage = () => {
-  const api = useApi();
+  const api = useMoviesApi();
   const searchParams = useSearchParams();
   const searchPage = searchParams?.get("page") ?? 1;
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);

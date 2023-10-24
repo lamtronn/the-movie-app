@@ -1,7 +1,7 @@
 "use client";
 
 import { MouseEventHandler, useCallback, useState } from "react";
-import useApi from "@/hooks/useApi";
+import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import { TMDB_BASE_URL } from "@/constants/config";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
@@ -11,7 +11,6 @@ export default function LoginForm() {
   const { setRequestToken } = useAuthStore();
 
   const handleSubmit = useCallback(async () => {
-    // setPreviousUrl(window.location.href);
     const requestTokenResponse = await api.getRequestToken(
       window.location.href,
     );
@@ -23,7 +22,10 @@ export default function LoginForm() {
   }, [api, setRequestToken]);
 
   return (
-    <div>
+    <div className="w-full h-screen flex flex-col justify-center items-center">
+      <p className="w-50 text-7xl text-center font-black mb-4">
+        Searching big movies, hit series and more.
+      </p>
       <button
         onClick={handleSubmit}
         className="bg-blue-700 p-2 text-white font-bold"

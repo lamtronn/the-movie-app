@@ -6,9 +6,6 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { setRequestToken } from "@/store/slices/authSlice";
 
 export type AppApi = {
-  updateText: () => Promise<string>;
-  getMovies: (page: number) => Promise<any>;
-  getTrendingMovies: () => Promise<any>;
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
   getAccessToken: (requestToken: string) => Promise<AccessTokenType>;
   deleteAccessToken: (accessToken: string) => Promise<any>;
@@ -16,7 +13,6 @@ export type AppApi = {
 
 function useAuthApi(): {
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
-  updateText: () => Promise<string>;
   deleteAccessToken: (accessToken: string) => Promise<any>;
   getAccessToken: (requestToken: string) => Promise<any>;
 } {
@@ -28,9 +24,6 @@ function useAuthApi(): {
 
   return useMemo(() => {
     return {
-      updateText: async () => {
-        return "text is updated!";
-      },
       getRequestToken: async (currentURL: string) =>
         await axiosNewTMDB.post(`/auth/request_token`, {
           redirect_to: currentURL,

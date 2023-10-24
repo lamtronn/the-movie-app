@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import useApi from "@/hooks/useApi";
+import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";
@@ -19,7 +19,7 @@ const Popular = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
     [],
   );
-  const api = useApi();
+  const api = useMoviesApi();
 
   const contextValues = {};
 

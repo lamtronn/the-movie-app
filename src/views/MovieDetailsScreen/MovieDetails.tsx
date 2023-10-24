@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import useApi from "@/hooks/useApi";
+import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MovieDetailsType } from "@/types/dataTypes";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -16,7 +16,7 @@ const MovieDetails = () => {
   console.log(movieId);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [movieDetails, setMovieDetails] = useState<MovieDetailsType>();
-  const api = useApi();
+  const api = useMoviesApi();
 
   const getTrendingMoviesData = useCallback(async () => {
     try {
