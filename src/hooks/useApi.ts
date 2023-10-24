@@ -7,16 +7,13 @@ import { useAuthStore } from "@/store/useAuthStore";
 export type AppApi = {
   getMovies: (page: number) => Promise<any>;
   getTrendingMovies: () => Promise<any>;
+  getUpcomingMovies: () => Promise<any>;
 };
 
-function useApi(): {
-  getMovies: (page: number) => Promise<any>;
-  getTrendingMovies: () => Promise<any>;
-} {
+function useApi(): AppApi {
   const axios = useAxios();
-  const axiosNewTMDB = useAxiosNewTMDB();
 
-  return useMemo(() => {
+  return <AppApi>useMemo(() => {
     return {
       getMovies: async (page: number) =>
         await axios
@@ -26,8 +23,12 @@ function useApi(): {
         await axios
           .get(`/trending/movie/day?language=en-US`)
           .then((res) => res.data),
+      getUpcomingMovies: async (page: number) =>
+        await axios
+          .get(`/movie/upcoming?page=${page ?? 1}`)
+          .then((res) => res.data),
     };
-  }, [axios, axiosNewTMDB]);
+  }, [axios]);
 }
 
 export default useApi;
