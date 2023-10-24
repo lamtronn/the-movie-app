@@ -1,12 +1,28 @@
 "use client";
 
 import { MouseEvent, useCallback } from "react";
-import useApi from "@/hooks/useApi";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
+import { usePathname } from "next/navigation";
+import "flowbite";
+const nav = [
+  {
+    title: "Home",
+    path: "/home",
+  },
+  {
+    title: "Popular",
+    path: "/popular",
+  },
+  {
+    title: "Upcoming",
+    path: "/upcoming",
+  },
+];
 
 const MainNavbar = () => {
   const api = useAuthApi();
+  const pathname = usePathname();
   const { accessToken } = useAuthStore();
 
   const handleLogout = useCallback(
@@ -17,7 +33,7 @@ const MainNavbar = () => {
   );
 
   return (
-    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-white border-gray-200 dark:bg-gray-900">
+    <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-black border-gray-200">
       {/*<a href="https://flowbite.com/" className="flex items-center">*/}
       <p className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
         Movie App
@@ -42,37 +58,29 @@ const MainNavbar = () => {
         </svg>
       </button>
       <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-          <li>
-            <a
-              href="src/app/(navbar)#"
-              className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-              aria-current="page"
-            >
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              href="src/app/(navbar)#"
-              className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              Popular
-            </a>
-          </li>
-          <li>
-            <a
-              href="src/app/(navbar)#"
-              className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
-              Upcoming
-            </a>
-          </li>
+        <ul className="z-50 absolute right-4 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:border-gray-700">
+          {nav.map((item) => (
+            <li key={item.path}>
+              <a
+                href={item.path}
+                className={`block py-2 pl-3 pr-4 text-white bg-black rounded md:p-0 dark:text-white ${
+                  item.path === pathname &&
+                  "md:text-blue-700 md:dark:text-blue-500"
+                }`}
+                aria-current="page"
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
           {accessToken && (
             <li>
-              <div className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                <button onClick={handleLogout}>Logout</button>
-              </div>
+              <button
+                className="block py-2 pl-3 pr-4 text-white bg-black rounded md:p-0 dark:text-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </li>
           )}
         </ul>

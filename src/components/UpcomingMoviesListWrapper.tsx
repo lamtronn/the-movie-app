@@ -12,7 +12,6 @@ const UpcomingMoviesListWrapper = ({ moviesList }: MoviesListWrapperProps) => {
 
   useEffect(() => {
     const newList = _.groupBy(moviesList, "release_date");
-    console.log(Object.keys(newList));
     setGroupedByDateList(newList);
     setDateList(Object.keys(newList));
   }, [moviesList]);
