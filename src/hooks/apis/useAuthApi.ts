@@ -1,7 +1,12 @@
 import useAxios from "@/hooks/useAxios";
 import { useMemo } from "react";
 import useAxiosNewTMDB from "@/hooks/useAxiosNewTMDB";
-import { AccessTokenType, RequestTokenType } from "@/types/apiTypes";
+import {
+  AccessTokenDeleteResultType,
+  AccessTokenResultType,
+  AccessTokenType,
+  RequestTokenType,
+} from "@/types/apiTypes";
 import { useAuthStore } from "@/store/useAuthStore";
 import { setRequestToken } from "@/store/slices/authSlice";
 
@@ -13,8 +18,10 @@ export type AppApi = {
 
 function useAuthApi(): {
   getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
-  deleteAccessToken: (accessToken: string) => Promise<any>;
-  getAccessToken: (requestToken: string) => Promise<any>;
+  deleteAccessToken: (
+    accessToken: string,
+  ) => Promise<AccessTokenDeleteResultType>;
+  getAccessToken: (requestToken: string) => Promise<AccessTokenResultType>;
 } {
   const axios = useAxios();
   const axiosNewTMDB = useAxiosNewTMDB();

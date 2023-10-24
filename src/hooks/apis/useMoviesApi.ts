@@ -1,14 +1,18 @@
 import useAxios from "@/hooks/useAxios";
 import { useMemo } from "react";
 import useAxiosNewTMDB from "@/hooks/useAxiosNewTMDB";
-import { AccessTokenType, RequestTokenType } from "@/types/apiTypes";
+import {
+  AccessTokenType,
+  MoviesResponseType,
+  RequestTokenType,
+} from "@/types/apiTypes";
 import { useAuthStore } from "@/store/useAuthStore";
 import { MovieDetailsType } from "@/types/dataTypes";
 
 export type AppApi = {
-  getMovies: (page: number) => Promise<any>;
-  getTrendingMovies: () => Promise<any>;
-  getUpcomingMovies: () => Promise<any>;
+  getMovies: (page: number) => Promise<MoviesResponseType>;
+  getTrendingMovies: () => Promise<MoviesResponseType>;
+  getUpcomingMovies: () => Promise<MoviesResponseType>;
   getMovieDetails: (
     movieId: string | null | undefined,
   ) => Promise<MovieDetailsType>;
