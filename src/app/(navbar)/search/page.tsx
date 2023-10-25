@@ -1,3 +1,4 @@
+"use client";
 import Search from "@/views/SearchScreen/Search";
 
 export default function HomepageScreen() {

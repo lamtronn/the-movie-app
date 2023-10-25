@@ -1,3 +1,4 @@
+"use client";
 import Upcoming from "@/views/UpcomingScreen/Upcoming";
 
 export default function UpcomingPage() {

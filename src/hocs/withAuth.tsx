@@ -1,4 +1,6 @@
-"use-client";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
+("use-client");
 import React, { useCallback, useEffect } from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -8,30 +10,6 @@ import { useRouter } from "next/navigation";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
-    // const api = useAuthApi();
-    //
-    // const { requestToken, accessToken, isLoadingAccessToken }: any =
-    //   useAuthStore();
-    //
-    // const getAccessToken = async () => {
-    //   await api.getAccessToken(requestToken ?? "");
-    // };
-    //
-    // // eslint-disable-next-line react-hooks/rules-of-hooks
-    // useEffect(() => {
-    //   if (requestToken && !accessToken) {
-    //     getAccessToken();
-    //   }
-    // }, [accessToken, getAccessToken, requestToken]);
-    //
-    // if (isLoadingAccessToken && !accessToken) {
-    //   return <div />;
-    // }
-    //
-    // if (!accessToken) {
-    //   return <LoginForm />;
-    // }
-    // const router = useRouter();
     const { requestToken, accessToken, isLoadingAccessToken } =
       useAuthStore() as any;
 
@@ -49,7 +27,7 @@ const withAuth = (WrappedComponent: any) => {
     }, [accessToken, requestToken, getAccessToken]);
 
     if (isLoadingAccessToken && !accessToken) {
-      return <div />;
+      return <LoadingSpinner />;
     }
 
     if (!accessToken) {

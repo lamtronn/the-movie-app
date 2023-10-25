@@ -1,3 +1,4 @@
+"use client";
 import MovieDetails from "@/views/MovieDetailsScreen/MovieDetails";
 
 export default function Details() {

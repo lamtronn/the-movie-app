@@ -1,3 +1,4 @@
+"use client";
 import Popular from "@/views/PopularScreen/Popular";
 
 export default function Account() {

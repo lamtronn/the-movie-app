@@ -1,3 +1,4 @@
+"use client";
 import Homepage from "@/views/HomeScreen/Homepage";
 
 export default function HomepageScreen() {
