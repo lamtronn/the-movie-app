@@ -62,6 +62,7 @@ const MainNavbar = () => {
           <path stroke="currentColor" d="M1 1h15M1 7h15M1 13h15" />
         </svg>
       </button>
+
       <div
         className={`${
           menuVisible ? "block" : "hidden"
