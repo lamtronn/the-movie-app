@@ -1,12 +1,12 @@
 "use client";
 
-import {useCallback, useContext, useState} from "react";
-import {useAuthStore} from "@/store/useAuthStore";
+import { useCallback, useContext, useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 import "flowbite";
-import {ErrorContext} from "@/hocs/ErrorBoundary";
-import {AxiosError} from "axios";
+import { ErrorContext } from "@/hocs/ErrorBoundary";
+import { AxiosError } from "axios";
 
 const nav = [
   {
@@ -26,8 +26,8 @@ const nav = [
 const MainNavbar = () => {
   const api = useAuthApi();
   const pathname = usePathname();
-  const {accessToken} = useAuthStore() as { accessToken: string | undefined };
-  const {onShowErrorToast} = useContext(ErrorContext) as any;
+  const { accessToken } = useAuthStore() as { accessToken: string | undefined };
+  const { onShowErrorToast } = useContext(ErrorContext) as any;
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const handleLogout = useCallback(async () => {
     try {
@@ -44,7 +44,7 @@ const MainNavbar = () => {
         Movie App
       </p>
       <button
-        onClick={() => setMenuVisible(prevState => !prevState}
+        onClick={() => setMenuVisible((prevState) => !prevState)}
         data-collapse-toggle="navbar-default"
         type="button"
         className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -59,12 +59,15 @@ const MainNavbar = () => {
           fill="none"
           viewBox="0 0 17 14"
         >
-          <path stroke="currentColor" d="M1 1h15M1 7h15M1 13h15"/>
+          <path stroke="currentColor" d="M1 1h15M1 7h15M1 13h15" />
         </svg>
       </button>
-      <div className={`${menuVisible ? 'block' : 'hidden'} w-full md:block md:w-auto" id="navbar-default`}>
-        <ul
-          className="z-50 absolute md:relative right-4 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:border-gray-700">
+      <div
+        className={`${
+          menuVisible ? "block" : "hidden"
+        } w-full md:block md:w-auto" id="navbar-default`}
+      >
+        <ul className="z-50 absolute md:relative right-4 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:border-gray-700">
           {nav.map((item) => (
             <li key={item.path}>
               <a
