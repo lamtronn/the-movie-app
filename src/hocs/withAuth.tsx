@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from "react";
+import React, {useCallback, useEffect} from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
-import { useAuthStore } from "@/store/useAuthStore";
+import {useAuthStore} from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
-import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
+import {cookies} from "next/headers";
+import {useRouter} from "next/navigation";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
@@ -31,7 +31,7 @@ const withAuth = (WrappedComponent: any) => {
     //   return <LoginForm />;
     // }
     // const router = useRouter();
-    const { requestToken, accessToken } = useAuthStore() as any;
+    const {requestToken, accessToken} = useAuthStore() as any;
 
     const api = useAuthApi();
 
@@ -39,37 +39,44 @@ const withAuth = (WrappedComponent: any) => {
       await api.getAccessToken(requestToken);
     }, [api, requestToken]);
 
-    const authStateLocalStorage = JSON.parse(
-      localStorage?.getItem("auth-storage") as string,
-    ).state;
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      if (
-        authStateLocalStorage.requestToken &&
-        !authStateLocalStorage.accessToken
-      ) {
-        getAccessToken();
-      }
-    }, [
-      authStateLocalStorage.accessToken,
-      authStateLocalStorage.requestToken,
-      getAccessToken,
-    ]);
+    if (typeof window !== "undefined") {
+      const authStateLocalStorage = JSON.parse(
+        localStorage?.getItem("auth-storage") as string,
+      ).state;
+
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useEffect(() => {
+        if (
+          authStateLocalStorage.requestToken &&
+          !authStateLocalStorage.accessToken
+        ) {
+          getAccessToken();
+        }
+      }, [
+        authStateLocalStorage.accessToken,
+        authStateLocalStorage.requestToken,
+        getAccessToken,
+      ]);
+    }
 
     if (
       authStateLocalStorage.isLoadingAccessToken &&
       !authStateLocalStorage.accessToken
     ) {
-      return <div />;
+      return <div/>;
     }
 
     if (!accessToken) {
-      return <LoginForm />;
+      return <LoginForm/>;
     }
+  }
 
-    return <WrappedComponent ref={ref} {...props} />;
-  });
-};
+  return <WrappedComponent ref={ref} {...props} />;
+}
+)
+;
+}
+;
 
 export default withAuth;
