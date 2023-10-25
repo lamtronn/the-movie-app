@@ -6,15 +6,17 @@ import useAuthApi from "@/hooks/apis/useAuthApi";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
+    const ISSERVER = typeof window === "undefined";
+
     const { requestToken } = useAuthStore() as {
       requestToken: string | undefined;
     };
 
     const api = useAuthApi();
 
-    const authStateLocalStorage = JSON.parse(
-      localStorage?.getItem("auth-storage") ?? "",
-    ).state;
+    const authStateLocalStorage = ISSERVER
+      ? JSON.parse(window.localStorage?.getItem("auth-storage") ?? "").state
+      : null;
 
     const getAccessToken = async () => {
       await api.getAccessToken(requestToken ?? "");
