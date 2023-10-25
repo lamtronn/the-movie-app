@@ -1,3 +1,4 @@
+"use-client";
 import React, { useCallback, useEffect } from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -31,7 +32,8 @@ const withAuth = (WrappedComponent: any) => {
     //   return <LoginForm />;
     // }
     // const router = useRouter();
-    const { requestToken, accessToken } = useAuthStore() as any;
+    const { requestToken, accessToken, isLoadingAccessToken } =
+      useAuthStore() as any;
 
     const api = useAuthApi();
 
@@ -45,33 +47,13 @@ const withAuth = (WrappedComponent: any) => {
       ).state;
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      // useEffect(
-      //   () => {
-      //     if (
-      //       authStateLocalStorage.requestToken &&
-      //       !authStateLocalStorage.accessToken
-      //     ) {
-      //       getAccessToken();
-      //     }
-      //   },
-      //   [
-      //     // authStateLocalStorage.accessToken,
-      //     // authStateLocalStorage.requestToken,
-      //     // getAccessToken,
-      //   ],
-      // );
+      useEffect(() => {
+        if (requestToken && !accessToken) {
+          getAccessToken();
+        }
+      }, [accessToken, requestToken, getAccessToken]);
 
-      if (
-        authStateLocalStorage.requestToken &&
-        !authStateLocalStorage.accessToken
-      ) {
-        getAccessToken();
-      }
-
-      if (
-        authStateLocalStorage.isLoadingAccessToken &&
-        !authStateLocalStorage.accessToken
-      ) {
+      if (isLoadingAccessToken && !accessToken) {
         return <div />;
       }
 
