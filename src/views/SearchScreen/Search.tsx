@@ -82,7 +82,8 @@ const Search = () => {
   return (
     <SearchContext.Provider value={contextValues}>
       <p className="mb-4">
-        {totalResults} results for "{searchQuery}"
+        {totalResults} results for{" "}
+        <span className="font-black"> {searchQuery}</span>
       </p>
       <MoviesListWrapper moviesList={moviesList} />
       <Pagination
