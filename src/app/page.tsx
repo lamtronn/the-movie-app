@@ -1,8 +1,17 @@
-import Image from 'next/image'
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/home");
+  });
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
+      <div className="w-full h-16 bg-black"></div>
     </main>
-  )
+  );
 }
