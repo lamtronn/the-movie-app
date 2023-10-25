@@ -62,12 +62,12 @@ const withAuth = (WrappedComponent: any) => {
         return <div />;
       }
 
-      if (!authStateLocalStorage.accessToken) {
-        return <LoginForm />;
+      if (authStateLocalStorage.accessToken) {
+        return <WrappedComponent ref={ref} {...props} />;
       }
     }
 
-    return <WrappedComponent ref={ref} {...props} />;
+    return <LoginForm />;
   });
 };
 
