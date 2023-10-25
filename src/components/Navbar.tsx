@@ -29,6 +29,7 @@ const MainNavbar = () => {
   const { accessToken } = useAuthStore() as { accessToken: string | undefined };
   const { onShowErrorToast } = useContext(ErrorContext) as any;
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
+
   const handleLogout = useCallback(async () => {
     try {
       await api.deleteAccessToken(accessToken ?? "");

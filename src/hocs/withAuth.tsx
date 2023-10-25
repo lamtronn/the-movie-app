@@ -3,6 +3,7 @@ import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
 import { cookies } from "next/headers";
+import { useRouter } from "next/navigation";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
@@ -43,8 +44,6 @@ const withAuth = (WrappedComponent: any) => {
         localStorage?.getItem("auth-storage") as string,
       ).state;
 
-      console.log(authStateLocalStorage.accessToken);
-
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
         if (
@@ -53,7 +52,11 @@ const withAuth = (WrappedComponent: any) => {
         ) {
           getAccessToken();
         }
-      }, []);
+      }, [
+        authStateLocalStorage.accessToken,
+        authStateLocalStorage.requestToken,
+        getAccessToken,
+      ]);
 
       if (
         authStateLocalStorage.isLoadingAccessToken &&
@@ -62,12 +65,12 @@ const withAuth = (WrappedComponent: any) => {
         return <div />;
       }
 
-      if (authStateLocalStorage.accessToken) {
-        return <WrappedComponent ref={ref} {...props} />;
+      if (!authStateLocalStorage.accessToken) {
+        return <LoginForm />;
       }
     }
 
-    return <LoginForm />;
+    return <WrappedComponent ref={ref} {...props} />;
   });
 };
 

@@ -1,12 +1,6 @@
 import useAxios from "@/hooks/useAxios";
 import { useMemo } from "react";
-import useAxiosNewTMDB from "@/hooks/useAxiosNewTMDB";
-import {
-  AccessTokenType,
-  MoviesResponseType,
-  RequestTokenType,
-} from "@/types/apiTypes";
-import { useAuthStore } from "@/store/useAuthStore";
+import { MoviesResponseType } from "@/types/apiTypes";
 import { MovieDetailsType } from "@/types/dataTypes";
 
 export type AppApi = {

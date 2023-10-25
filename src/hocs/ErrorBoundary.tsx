@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { createContext } from "react";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 type ErrorBoundaryType = {
   children: React.ReactNode;
@@ -18,11 +19,13 @@ type ContextValueType = {
 
 export const ErrorContext = createContext<any>(undefined);
 const ErrorBoundary = ({ children }: ErrorBoundaryType) => {
+  const router = useRouter();
   const { reset } = useAuthStore() as { reset: () => void };
   const onShowErrorToast = (e: AxiosError, isClearToken?: boolean) => {
     const responseData: any = e?.response?.data;
     if ((responseData.status as any) === 404 && isClearToken) {
       reset();
+      router.push("/login");
     }
     return toast.error(responseData.status_message, {
       position: "top-right",
