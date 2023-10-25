@@ -34,11 +34,11 @@ const withAuth = (WrappedComponent: any) => {
     // const router = useRouter();
     const { requestToken, accessToken, isLoadingAccessToken } =
       useAuthStore() as any;
-
+    alert(accessToken);
     const api = useAuthApi();
 
     const getAccessToken = useCallback(async () => {
-      await api.getAccessToken(requestToken);
+      const res = await api.getAccessToken(requestToken);
     }, [api, requestToken]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -11,15 +11,15 @@ import Link from "next/link";
 const nav = [
   {
     title: "Home",
-    path: "home",
+    path: "/home",
   },
   {
     title: "Popular",
-    path: "popular",
+    path: "/popular",
   },
   {
     title: "Upcoming",
-    path: "upcoming",
+    path: "/upcoming",
   },
 ];
 
@@ -29,7 +29,6 @@ const MainNavbar = () => {
   const { accessToken } = useAuthStore() as { accessToken: string | undefined };
   const { onShowErrorToast } = useContext(ErrorContext) as any;
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
-
   const handleLogout = useCallback(async () => {
     try {
       await api.deleteAccessToken(accessToken ?? "");
@@ -92,6 +91,7 @@ const MainNavbar = () => {
                 </button>
               </li>
             )}
+            <li></li>
           </ul>
         </div>
       </div>
