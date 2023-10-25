@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
-import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
@@ -34,14 +34,16 @@ const withAuth = (WrappedComponent: any) => {
 
     const api = useAuthApi();
 
-    const getAccessToken = async () => {
+    const getAccessToken = useCallback(async () => {
       await api.getAccessToken(requestToken);
-    };
+    }, [api, requestToken]);
 
     if (typeof window !== "undefined") {
       const authStateLocalStorage = JSON.parse(
         localStorage?.getItem("auth-storage") as string,
       ).state;
+
+      console.log(authStateLocalStorage.accessToken);
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
@@ -62,7 +64,6 @@ const withAuth = (WrappedComponent: any) => {
 
       if (!authStateLocalStorage.accessToken) {
         return <LoginForm />;
-        // router.push("/login");
       }
     }
 
