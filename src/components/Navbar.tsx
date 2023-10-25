@@ -1,10 +1,13 @@
 "use client";
 
-import { MouseEvent, useCallback } from "react";
+import { MouseEvent, useCallback, useContext } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
 import { usePathname } from "next/navigation";
 import "flowbite";
+import ErrorToast from "@/components/ErrorToast";
+import { createPortal } from "react-dom";
+import { ErrorContext } from "@/hocs/ErrorBoundary";
 
 const nav = [
   {
@@ -25,13 +28,16 @@ const MainNavbar = () => {
   const api = useAuthApi();
   const pathname = usePathname();
   const { accessToken } = useAuthStore();
+  const { onShowErrorToast } = useContext(ErrorContext);
 
-  const handleLogout = useCallback(
-    async (e: MouseEvent<HTMLButtonElement>) => {
+  const handleLogout = useCallback(async () => {
+    try {
       await api.deleteAccessToken(accessToken);
-    },
-    [accessToken, api],
-  );
+    } catch (e) {
+      console.log(e);
+      onShowErrorToast(e, true);
+    }
+  }, [accessToken, api]);
 
   return (
     <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-black border-gray-200">

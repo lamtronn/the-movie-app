@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MovieDetailsType } from "@/types/dataTypes";
@@ -9,14 +9,16 @@ import {
   IMDB_MOVIE_DETAILS_URL,
   TMDB_BASE_IMAGE_URL,
 } from "@/constants/config";
+import { ErrorContext } from "@/hocs/ErrorBoundary";
 
 const MovieDetails = () => {
   const searchParams = useSearchParams();
   const movieId = searchParams?.get("id");
-  console.log(movieId);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [movieDetails, setMovieDetails] = useState<MovieDetailsType>();
   const api = useMoviesApi();
+
+  const { onShowErrorToast } = useContext(ErrorContext);
 
   const getTrendingMoviesData = useCallback(async () => {
     try {
@@ -26,6 +28,7 @@ const MovieDetails = () => {
       setIsLoading(false);
     } catch (e) {
       console.log(e);
+      onShowErrorToast(e);
     }
   }, [api]);
 

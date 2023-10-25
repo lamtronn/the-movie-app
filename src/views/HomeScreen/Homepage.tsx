@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
@@ -9,6 +15,8 @@ import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
 import MoviesCarousel from "@/components/MoviesCarousel";
+import { ToastContainer, toast } from "react-toastify";
+import ErrorBoundary, { ErrorContext } from "@/hocs/ErrorBoundary";
 
 export const HomepageContext = createContext<ContextType>(undefined);
 
@@ -33,6 +41,8 @@ const Homepage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
     [],
   );
+
+  const { onShowErrorToast } = useContext(ErrorContext);
 
   const contextValues = {
     isLoading,
@@ -62,6 +72,7 @@ const Homepage = () => {
       setIsLoading(false);
     } catch (e) {
       console.log(e);
+      onShowErrorToast(e);
     }
   }, [api]);
 
