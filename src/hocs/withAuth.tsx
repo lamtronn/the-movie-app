@@ -29,18 +29,18 @@ const withAuth = (WrappedComponent: any) => {
     //   return <LoginForm />;
     // }
 
+    const { requestToken } = useAuthStore() as any;
+
+    const api = useAuthApi();
+
+    const getAccessToken = async () => {
+      await api.getAccessToken(requestToken);
+    };
+
     if (typeof window !== "undefined") {
-      const { requestToken } = useAuthStore();
-
-      const api = useAuthApi();
-
       const authStateLocalStorage = JSON.parse(
-        localStorage?.getItem("auth-storage"),
+        localStorage?.getItem("auth-storage") ?? "",
       ).state;
-
-      const getAccessToken = async () => {
-        await api.getAccessToken(requestToken);
-      };
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useEffect(() => {
