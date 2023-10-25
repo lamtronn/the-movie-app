@@ -17,18 +17,17 @@ import { useSearchParams } from "next/navigation";
 import MoviesCarousel from "@/components/MoviesCarousel";
 import { ErrorContext } from "@/hocs/ErrorBoundary";
 import SearchInput from "@/components/SearchInput";
+import { MoviesResultType } from "@/types/apiTypes";
 
-export const HomepageContext = createContext<ContextType>(undefined);
+export const HomepageContext = createContext<any>(undefined);
 
 type ContextType = {
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
-  // page: number;
-  // setPage: (value: number) => void;
-  moviesList: MoviesType[];
-  setMoviesList: (value: MoviesType[]) => void;
-  trendingMoviesList: MoviesType[];
-  setTrendingMoviesList: (value: MoviesType[]) => void;
+  moviesList: MoviesResultType[];
+  setMoviesList: (value: MoviesResultType[]) => void;
+  trendingMoviesList: MoviesResultType[];
+  setTrendingMoviesList: (value: MoviesResultType[]) => void;
 };
 
 const Homepage = () => {
@@ -38,10 +37,10 @@ const Homepage = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [moviesList, setMoviesList] = useState<MoviesType[]>([]);
-  const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
-    [],
-  );
+  const [moviesList, setMoviesList] = useState<MoviesResultType[]>([]);
+  const [trendingMoviesList, setTrendingMoviesList] = useState<
+    MoviesResultType[]
+  >([]);
 
   const { onShowErrorToast } = useContext(ErrorContext);
 

@@ -1,7 +1,6 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
 import { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { ApiMode } from "@/types/apiTypes";
-import { useAppDispatch, useAppSelector } from "@/store";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const apiMode: ApiMode = "local";
@@ -17,18 +16,16 @@ const createAxiosInstance = () => {
   });
 };
 
-const retryAxios = createAxiosInstance();
-
 function useAxios() {
-  const { accessToken } = useAuthStore();
-  const sessionToken = useRef<string | null>(accessToken);
+  const { accessToken } = useAuthStore() as { accessToken: string | undefined };
+  const sessionToken = useRef<string | null>(accessToken ?? "");
   useLayoutEffect(() => {
-    sessionToken.current = accessToken;
+    sessionToken.current = accessToken ?? "";
   }, [accessToken]);
 
   const requestInterceptor = useCallback(
     (config: InternalAxiosRequestConfig) => {
-      let newConfig = config;
+      let newConfig: any = config;
       if (sessionToken.current) {
         newConfig = {
           ...config,

@@ -9,10 +9,9 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/Pagination";
 import UpcomingMoviesListWrapper from "@/components/UpcomingMoviesListWrapper";
+import { MoviesResultType } from "@/types/apiTypes";
 
-export const UpcomingContext = createContext<ContextType>(undefined);
-
-type ContextType = {};
+export const UpcomingContext = createContext<any>(undefined);
 
 const Upcoming = () => {
   const searchParams = useSearchParams();
@@ -20,9 +19,9 @@ const Upcoming = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [upcomingMoviesList, setUpcomingMoviesList] = useState<MoviesType[]>(
-    [],
-  );
+  const [upcomingMoviesList, setUpcomingMoviesList] = useState<
+    MoviesResultType[] | MoviesType[]
+  >([]);
   const api = useMoviesApi();
 
   const contextValues = {};

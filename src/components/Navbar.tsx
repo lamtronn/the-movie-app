@@ -6,6 +6,7 @@ import useAuthApi from "@/hooks/apis/useAuthApi";
 import { usePathname } from "next/navigation";
 import "flowbite";
 import { ErrorContext } from "@/hocs/ErrorBoundary";
+import { AxiosError } from "axios";
 
 const nav = [
   {
@@ -25,12 +26,12 @@ const nav = [
 const MainNavbar = () => {
   const api = useAuthApi();
   const pathname = usePathname();
-  const { accessToken } = useAuthStore();
-  const { onShowErrorToast } = useContext(ErrorContext);
+  const { accessToken } = useAuthStore() as { accessToken: string | undefined };
+  const { onShowErrorToast } = useContext(ErrorContext) as any;
 
   const handleLogout = useCallback(async () => {
     try {
-      await api.deleteAccessToken(accessToken);
+      await api.deleteAccessToken(accessToken ?? "");
     } catch (e) {
       console.log(e);
       onShowErrorToast(e, true);

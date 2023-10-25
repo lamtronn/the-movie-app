@@ -12,17 +12,17 @@ import { MovieDetailsType } from "@/types/dataTypes";
 export type AppApi = {
   getMovies: (page: number) => Promise<MoviesResponseType>;
   getTrendingMovies: () => Promise<MoviesResponseType>;
-  getUpcomingMovies: () => Promise<MoviesResponseType>;
+  getUpcomingMovies: (page: number) => Promise<MoviesResponseType>;
   getMovieDetails: (
     movieId: string | null | undefined,
   ) => Promise<MovieDetailsType>;
-  searchMovies: (query: string) => Promise<any>;
+  searchMovies: (query: string, page?: number) => Promise<any>;
 };
 
 function useMoviesApi(): AppApi {
   const axios = useAxios();
 
-  return <AppApi>useMemo(() => {
+  return useMemo(() => {
     return {
       getMovies: async (page: number) =>
         await axios
@@ -43,7 +43,7 @@ function useMoviesApi(): AppApi {
           .get(`/search/movie?query=${query}&page=${page ?? 1}`)
           .then((res) => res.data),
     };
-  }, [axios]);
+  }, [axios]) as any;
 }
 
 export default useMoviesApi;

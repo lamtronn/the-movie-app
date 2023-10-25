@@ -22,7 +22,7 @@ const createAxiosInstance = () => {
 function useAxiosNewTMDB() {
   const requestInterceptor = useCallback(
     (config: InternalAxiosRequestConfig) => {
-      let newConfig: InternalAxiosRequestConfig = {
+      let newConfig: any = {
         ...config,
         headers: {
           ...config.headers,
@@ -31,7 +31,7 @@ function useAxiosNewTMDB() {
       };
       return newConfig;
     },
-    []
+    [],
   );
 
   return useMemo(() => {

@@ -8,7 +8,9 @@ import useAuthApi from "@/hooks/apis/useAuthApi";
 
 export default function LoginForm() {
   const api = useAuthApi();
-  const { setRequestToken } = useAuthStore();
+  const { setRequestToken } = useAuthStore() as {
+    setRequestToken: (value: string) => void;
+  };
 
   const handleSubmit = useCallback(async () => {
     const requestTokenResponse = await api.getRequestToken(

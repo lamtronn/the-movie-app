@@ -2,9 +2,10 @@
 import { MoviesType } from "@/types/dataTypes";
 import { TMDB_BASE_IMAGE_URL_500 } from "@/constants/config";
 import { useRouter } from "next/navigation";
+import { MoviesResultType } from "@/types/apiTypes";
 
 type MoviesItemProps = {
-  data: MoviesType;
+  data: MoviesResultType | MoviesType;
 };
 const MoviesItem = ({ data }: MoviesItemProps) => {
   const router = useRouter();

@@ -3,7 +3,7 @@ import "flowbite";
 import { useCallback, useState } from "react";
 import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import { MoviesType } from "@/types/dataTypes";
-import debounce from "lodash/debounce";
+import _ from "lodash";
 import { TMDB_BASE_IMAGE_URL_500 } from "@/constants/config";
 import { useRouter } from "next/navigation";
 
@@ -15,7 +15,7 @@ const SearchInput = () => {
   const api = useMoviesApi();
   const router = useRouter();
 
-  const onChangeSearchInput = debounce(async ({ target }) => {
+  const onChangeSearchInput = _.debounce(async ({ target }) => {
     try {
       setSearchInput(target.value);
       const res = await api.searchMovies(target.value);
@@ -97,7 +97,13 @@ const SearchInput = () => {
   );
 };
 
-const SearchItem = ({ movie, onClick }) => {
+const SearchItem = ({
+  movie,
+  onClick,
+}: {
+  movie: MoviesType;
+  onClick: () => void;
+}) => {
   return (
     <div
       className="flex justify-start items-center gap-4 hover:bg-gray-100 dark:hover:bg-gray-600 mb-3"

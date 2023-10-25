@@ -6,14 +6,25 @@ import { createContext } from "react";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/store/useAuthStore";
 
-export const ErrorContext = createContext(undefined);
-const ErrorBoundary = ({ children }) => {
-  const { reset } = useAuthStore();
+type ErrorBoundaryType = {
+  children: React.ReactNode;
+};
+
+type ContextValueType = {
+  onShowErrorToast:
+    | ((e: AxiosError, isClearToken?: boolean) => number | string)
+    | undefined;
+};
+
+export const ErrorContext = createContext<any>(undefined);
+const ErrorBoundary = ({ children }: ErrorBoundaryType) => {
+  const { reset } = useAuthStore() as { reset: () => void };
   const onShowErrorToast = (e: AxiosError, isClearToken?: boolean) => {
-    if (e.response.data.status === 404 && isClearToken) {
+    const responseData: any = e?.response?.data;
+    if ((responseData.status as any) === 404 && isClearToken) {
       reset();
     }
-    return toast.error(e.response.data.status_message, {
+    return toast.error(responseData.status_message, {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: true,
@@ -22,10 +33,10 @@ const ErrorBoundary = ({ children }) => {
       theme: "light",
     });
   };
-  const value = { onShowErrorToast };
+  const value: ContextValueType | undefined = { onShowErrorToast };
 
   return (
-    <ErrorContext.Provider value={value}>
+    <ErrorContext.Provider value={value as any}>
       <div className="relative">
         <ToastContainer />
         {children}

@@ -19,7 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import ErrorBoundary, { ErrorContext } from "@/hocs/ErrorBoundary";
 import SearchInput from "@/components/SearchInput";
 
-export const SearchContext = createContext<ContextType>(undefined);
+export const SearchContext = createContext<any>(undefined);
 
 type ContextType = {
   isLoading: boolean;
@@ -51,7 +51,7 @@ const Search = () => {
   const getMoviesData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await api.searchMovies(searchQuery, page);
+      const res = await api.searchMovies(searchQuery.toString(), page);
       setMoviesList(res.results);
       setTotalPages(res.total_pages);
       setTotalResults(res.total_results);

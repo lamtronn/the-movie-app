@@ -8,26 +8,19 @@ import {
   RequestTokenType,
 } from "@/types/apiTypes";
 import { useAuthStore } from "@/store/useAuthStore";
-import { setRequestToken } from "@/store/slices/authSlice";
 
 export type AppApi = {
-  getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
+  getRequestToken: (currentURL: string) => Promise<RequestTokenType | any>;
   getAccessToken: (requestToken: string) => Promise<AccessTokenType>;
   deleteAccessToken: (accessToken: string) => Promise<any>;
 };
 
-function useAuthApi(): {
-  getRequestToken: (currentURL: string) => Promise<RequestTokenType>;
-  deleteAccessToken: (
-    accessToken: string,
-  ) => Promise<AccessTokenDeleteResultType>;
-  getAccessToken: (requestToken: string) => Promise<AccessTokenResultType>;
-} {
+function useAuthApi(): AppApi {
   const axios = useAxios();
   const axiosNewTMDB = useAxiosNewTMDB();
 
   const { setAccessToken, setIsLoadingAccessToken, setRequestToken } =
-    useAuthStore();
+    useAuthStore() as any;
 
   return useMemo(() => {
     return {

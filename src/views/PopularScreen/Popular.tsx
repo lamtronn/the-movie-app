@@ -7,18 +7,16 @@ import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
+import { MoviesResultType } from "@/types/apiTypes";
 
-export const PopularContext = createContext<ContextType>(undefined);
-
-type ContextType = {};
+export const PopularContext = createContext<any>(undefined);
 
 const Popular = () => {
   const searchParams = useSearchParams();
-  const searchPage = searchParams?.get("page") ?? 1;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
-    [],
-  );
+  const [trendingMoviesList, setTrendingMoviesList] = useState<
+    MoviesResultType[] | MoviesType[]
+  >([]);
   const api = useMoviesApi();
 
   const contextValues = {};
