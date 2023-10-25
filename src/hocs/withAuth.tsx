@@ -6,17 +6,10 @@ import useAuthApi from "@/hooks/apis/useAuthApi";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
-    const ISSERVER = typeof window === "undefined";
-
-    const { requestToken } = useAuthStore() as {
-      requestToken: string | undefined;
-    };
-
     const api = useAuthApi();
 
-    const authStateLocalStorage = !ISSERVER
-      ? JSON.parse(window.localStorage?.getItem("auth-storage") ?? "").state
-      : null;
+    const { requestToken, accessToken, isLoadingAccessToken }: any =
+      useAuthStore();
 
     const getAccessToken = async () => {
       await api.getAccessToken(requestToken ?? "");
@@ -24,22 +17,16 @@ const withAuth = (WrappedComponent: any) => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      if (
-        authStateLocalStorage.requestToken &&
-        !authStateLocalStorage.accessToken
-      ) {
+      if (requestToken && !accessToken) {
         getAccessToken();
       }
     }, []);
 
-    if (
-      authStateLocalStorage.isLoadingAccessToken &&
-      !authStateLocalStorage.accessToken
-    ) {
+    if (isLoadingAccessToken && !accessToken) {
       return <div />;
     }
 
-    if (!authStateLocalStorage.accessToken) {
+    if (!accessToken) {
       return <LoginForm />;
     }
 
