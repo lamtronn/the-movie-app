@@ -36,6 +36,7 @@ const Search = () => {
   const searchPage = searchParams?.get("page") ?? 1;
   const searchQuery = searchParams?.get("query") ?? 1;
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalResults, setTotalResults] = useState<number>(0);
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [moviesList, setMoviesList] = useState<MoviesType[]>([]);
@@ -55,6 +56,7 @@ const Search = () => {
       const res = await api.searchMovies(searchQuery, page);
       setMoviesList(res.results);
       setTotalPages(res.total_pages);
+      setTotalResults(res.total_results);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -81,7 +83,9 @@ const Search = () => {
 
   return (
     <SearchContext.Provider value={contextValues}>
-      <p className="mb-4">Results for "{searchQuery}"</p>
+      <p className="mb-4">
+        {totalResults} results for "{searchQuery}"
+      </p>
       <MoviesListWrapper moviesList={moviesList} />
       <Pagination
         page={page}
