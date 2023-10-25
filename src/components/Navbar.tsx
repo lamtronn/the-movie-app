@@ -1,12 +1,10 @@
 "use client";
 
-import { MouseEvent, useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
 import { usePathname } from "next/navigation";
 import "flowbite";
-import ErrorToast from "@/components/ErrorToast";
-import { createPortal } from "react-dom";
 import { ErrorContext } from "@/hocs/ErrorBoundary";
 
 const nav = [

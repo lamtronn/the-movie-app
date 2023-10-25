@@ -15,10 +15,11 @@ import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
 import MoviesCarousel from "@/components/MoviesCarousel";
-import { ErrorContext } from "@/hocs/ErrorBoundary";
+import { ToastContainer, toast } from "react-toastify";
+import ErrorBoundary, { ErrorContext } from "@/hocs/ErrorBoundary";
 import SearchInput from "@/components/SearchInput";
 
-export const HomepageContext = createContext<ContextType>(undefined);
+export const SearchContext = createContext<ContextType>(undefined);
 
 type ContextType = {
   isLoading: boolean;
@@ -27,21 +28,17 @@ type ContextType = {
   // setPage: (value: number) => void;
   moviesList: MoviesType[];
   setMoviesList: (value: MoviesType[]) => void;
-  trendingMoviesList: MoviesType[];
-  setTrendingMoviesList: (value: MoviesType[]) => void;
 };
 
-const Homepage = () => {
+const Search = () => {
   const api = useMoviesApi();
   const searchParams = useSearchParams();
   const searchPage = searchParams?.get("page") ?? 1;
+  const searchQuery = searchParams?.get("query") ?? 1;
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [moviesList, setMoviesList] = useState<MoviesType[]>([]);
-  const [trendingMoviesList, setTrendingMoviesList] = useState<MoviesType[]>(
-    [],
-  );
 
   const { onShowErrorToast } = useContext(ErrorContext);
 
@@ -50,45 +47,31 @@ const Homepage = () => {
     setIsLoading,
     moviesList,
     setMoviesList,
-    trendingMoviesList,
-    setTrendingMoviesList,
   };
 
   const getMoviesData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await api.getMovies(page);
-      setTotalPages(res.total_pages);
+      const res = await api.searchMovies(searchQuery, page);
       setMoviesList(res.results);
-      setIsLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [api, page]);
-
-  const getTrendingMoviesData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const res = await api.getTrendingMovies();
-      setTrendingMoviesList(res.results);
+      setTotalPages(res.total_pages);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
       onShowErrorToast(e);
     }
-  }, [api]);
+  }, [api, onShowErrorToast, page, searchQuery]);
 
   useEffect(() => {
     getMoviesData();
-    getTrendingMoviesData();
-  }, [getMoviesData, getTrendingMoviesData]);
+  }, [getMoviesData]);
 
   const onGoToNewPage = useCallback((newPage: number) => {
     setPage(newPage);
     window.history.pushState(
       {},
       "",
-      `${window.location.pathname}?page=${newPage}`,
+      `${window.location.pathname}?query=${searchQuery}&page=${newPage}`,
     );
   }, []);
 
@@ -97,9 +80,8 @@ const Homepage = () => {
   }
 
   return (
-    <HomepageContext.Provider value={contextValues}>
-      <SearchInput />
-      <MoviesCarousel />
+    <SearchContext.Provider value={contextValues}>
+      <p className="mb-4">Results for "{searchQuery}"</p>
       <MoviesListWrapper moviesList={moviesList} />
       <Pagination
         page={page}
@@ -107,8 +89,8 @@ const Homepage = () => {
         onClickPreviousPage={() => onGoToNewPage(page - 1)}
         onClickNextPage={() => onGoToNewPage(page + 1)}
       />
-    </HomepageContext.Provider>
+    </SearchContext.Provider>
   );
 };
 
-export default withAuth(Homepage);
+export default withAuth(Search);

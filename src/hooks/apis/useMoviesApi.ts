@@ -16,6 +16,7 @@ export type AppApi = {
   getMovieDetails: (
     movieId: string | null | undefined,
   ) => Promise<MovieDetailsType>;
+  searchMovies: (query: string) => Promise<any>;
 };
 
 function useMoviesApi(): AppApi {
@@ -37,6 +38,10 @@ function useMoviesApi(): AppApi {
           .then((res) => res.data),
       getMovieDetails: async (id: number) =>
         await axios.get(`/movie/${id}`).then((res) => res.data),
+      searchMovies: async (query: string, page: number) =>
+        await axios
+          .get(`/search/movie?query=${query}&page=${page ?? 1}`)
+          .then((res) => res.data),
     };
   }, [axios]);
 }

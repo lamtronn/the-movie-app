@@ -17,6 +17,7 @@ type ContextType = {};
 const Upcoming = () => {
   const searchParams = useSearchParams();
   const searchPage = searchParams?.get("page") ?? 1;
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(Number(searchPage) ?? 10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [upcomingMoviesList, setUpcomingMoviesList] = useState<MoviesType[]>(
@@ -31,6 +32,7 @@ const Upcoming = () => {
       setIsLoading(true);
       const res = await api.getUpcomingMovies(page);
       setUpcomingMoviesList(res.results);
+      setTotalPages(res.total_pages);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -60,6 +62,7 @@ const Upcoming = () => {
       <UpcomingMoviesListWrapper moviesList={upcomingMoviesList} />
       <Pagination
         page={page}
+        totalPages={totalPages}
         onClickPreviousPage={() => onGoToNewPage(page - 1)}
         onClickNextPage={() => onGoToNewPage(page + 1)}
       />
