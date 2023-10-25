@@ -41,25 +41,19 @@ const withAuth = (WrappedComponent: any) => {
       await api.getAccessToken(requestToken);
     }, [api, requestToken]);
 
-    if (typeof window !== "undefined") {
-      const authStateLocalStorage = JSON.parse(
-        localStorage?.getItem("auth-storage") as string,
-      ).state;
-
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useEffect(() => {
-        if (requestToken && !accessToken) {
-          getAccessToken();
-        }
-      }, [accessToken, requestToken, getAccessToken]);
-
-      if (isLoadingAccessToken && !accessToken) {
-        return <div />;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (requestToken && !accessToken) {
+        getAccessToken();
       }
+    }, [accessToken, requestToken, getAccessToken]);
 
-      if (!accessToken) {
-        return <LoginForm />;
-      }
+    if (isLoadingAccessToken && !accessToken) {
+      return <div />;
+    }
+
+    if (!accessToken) {
+      return <LoginForm />;
     }
 
     return <WrappedComponent ref={ref} {...props} />;

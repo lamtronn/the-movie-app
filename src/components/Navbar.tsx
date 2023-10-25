@@ -11,15 +11,15 @@ import Link from "next/link";
 const nav = [
   {
     title: "Home",
-    path: "/home",
+    path: "home",
   },
   {
     title: "Popular",
-    path: "/popular",
+    path: "popular",
   },
   {
     title: "Upcoming",
-    path: "/upcoming",
+    path: "upcoming",
   },
 ];
 
