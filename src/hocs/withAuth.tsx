@@ -14,7 +14,7 @@ const withAuth = (WrappedComponent: any) => {
 
     const api = useAuthApi();
 
-    const authStateLocalStorage = ISSERVER
+    const authStateLocalStorage = !ISSERVER
       ? JSON.parse(window.localStorage?.getItem("auth-storage") ?? "").state
       : null;
 
