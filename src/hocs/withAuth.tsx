@@ -45,21 +45,28 @@ const withAuth = (WrappedComponent: any) => {
       ).state;
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useEffect(
-        () => {
-          if (
-            authStateLocalStorage.requestToken &&
-            !authStateLocalStorage.accessToken
-          ) {
-            getAccessToken();
-          }
-        },
-        [
-          // authStateLocalStorage.accessToken,
-          // authStateLocalStorage.requestToken,
-          // getAccessToken,
-        ],
-      );
+      // useEffect(
+      //   () => {
+      //     if (
+      //       authStateLocalStorage.requestToken &&
+      //       !authStateLocalStorage.accessToken
+      //     ) {
+      //       getAccessToken();
+      //     }
+      //   },
+      //   [
+      //     // authStateLocalStorage.accessToken,
+      //     // authStateLocalStorage.requestToken,
+      //     // getAccessToken,
+      //   ],
+      // );
+
+      if (
+        authStateLocalStorage.requestToken &&
+        !authStateLocalStorage.accessToken
+      ) {
+        getAccessToken();
+      }
 
       if (
         authStateLocalStorage.isLoadingAccessToken &&
