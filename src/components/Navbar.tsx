@@ -6,7 +6,6 @@ import useAuthApi from "@/hooks/apis/useAuthApi";
 import { usePathname } from "next/navigation";
 import "flowbite";
 import { ErrorContext } from "@/hocs/ErrorBoundary";
-import { AxiosError } from "axios";
 
 const nav = [
   {

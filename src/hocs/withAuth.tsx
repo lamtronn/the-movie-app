@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
+import { useRouter } from "next/navigation";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {
@@ -28,7 +29,7 @@ const withAuth = (WrappedComponent: any) => {
     // if (!accessToken) {
     //   return <LoginForm />;
     // }
-
+    // const router = useRouter();
     const { requestToken } = useAuthStore() as any;
 
     const api = useAuthApi();
@@ -39,7 +40,7 @@ const withAuth = (WrappedComponent: any) => {
 
     if (typeof window !== "undefined") {
       const authStateLocalStorage = JSON.parse(
-        localStorage?.getItem("auth-storage") ?? "",
+        localStorage?.getItem("auth-storage") as string,
       ).state;
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -61,6 +62,7 @@ const withAuth = (WrappedComponent: any) => {
 
       if (!authStateLocalStorage.accessToken) {
         return <LoginForm />;
+        // router.push("/login");
       }
     }
 
