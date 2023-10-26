@@ -9,7 +9,6 @@ import {
 } from "react";
 import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
-import { MoviesType } from "@/types/dataTypes";
 import MoviesListWrapper from "@/components/MoviesListWrapper";
 import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";

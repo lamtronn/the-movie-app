@@ -5,8 +5,6 @@ import React, { useCallback, useEffect } from "react";
 import LoginForm from "@/views/LoginScreen/LoginForm";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";
-import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
 
 const withAuth = (WrappedComponent: any) => {
   return React.forwardRef(function AuthComponent(props, ref) {

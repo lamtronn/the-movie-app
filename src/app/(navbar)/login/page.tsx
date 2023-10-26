@@ -1,5 +1,4 @@
 import LoginForm from "@/views/LoginScreen/LoginForm";
-
 export default function Login() {
   return (
     <div className="h-screen w-full flex">

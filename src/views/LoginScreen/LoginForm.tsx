@@ -1,7 +1,6 @@
 "use client";
 
-import { MouseEventHandler, useCallback, useState } from "react";
-import useMoviesApi from "@/hooks/apis/useMoviesApi";
+import { useCallback } from "react";
 import { TMDB_BASE_URL } from "@/constants/config";
 import { useAuthStore } from "@/store/useAuthStore";
 import useAuthApi from "@/hooks/apis/useAuthApi";

@@ -4,7 +4,6 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import useMoviesApi from "@/hooks/apis/useMoviesApi";
 import withAuth from "@/hocs/withAuth";
 import { MoviesType } from "@/types/dataTypes";
-import MoviesListWrapper from "@/components/MoviesListWrapper";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/Pagination";

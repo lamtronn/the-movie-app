@@ -9,7 +9,7 @@ const MoviesCarousel = () => {
   const { trendingMoviesList } = useContext(HomepageContext);
   return (
     <Carousel showArrows showStatus={false} infiniteLoop showThumbs={false}>
-      {trendingMoviesList.slice(0, 5).map((item: MoviesType) => (
+      {trendingMoviesList?.slice(0, 5).map((item: MoviesType) => (
         <div key={item.id} className="mb-5">
           <img
             className="aspect-video object-cover"

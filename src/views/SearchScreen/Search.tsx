@@ -14,10 +14,7 @@ import MoviesListWrapper from "@/components/MoviesListWrapper";
 import Pagination from "@/components/Pagination";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useSearchParams } from "next/navigation";
-import MoviesCarousel from "@/components/MoviesCarousel";
-import { ToastContainer, toast } from "react-toastify";
-import ErrorBoundary, { ErrorContext } from "@/hocs/ErrorBoundary";
-import SearchInput from "@/components/SearchInput";
+import { ErrorContext } from "@/hocs/ErrorBoundary";
 
 export const SearchContext = createContext<any>(undefined);
 
